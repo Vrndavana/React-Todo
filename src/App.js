@@ -3,25 +3,24 @@ import ToDoForm from './components/TodoComponents/TodoForm';
 import ToDoList from './components/TodoComponents/TodoList';
 import './components/TodoComponents/Todo.css';
 
-
-// Const Array - TODO ITEMS
 const toDo = [
+  
   {
     task: 'Organize Garage',
-    id: 1,
+    id: 1528817077286,
     completed: false
   },
   {
     task: 'Bake Cookies',
-    id: 2,
+    id: 1528817084358,
     completed: false
   }
 ];
 
-
-// Class Components
 class App extends React.Component {
-
+  // you will need a place to store your state in this component.
+  // design `App` to be the parent component of your application.
+  // this component is going to take care of state, and any change handlers you need to work with your state
   constructor() {
     super();
     this.state = {
@@ -29,24 +28,24 @@ class App extends React.Component {
       newItem: ''
     }
   }
-
-  toggleItem = clickedId => {
+  toggleItem = id => {
     const newToDo = this.state.toDoList.map( item => {
-      if (item.id === clickedId) {
-        return {
-          ...item,
-          completed: !item.completed
-        };
+      if (item.id === id) {
+        item.completed = !item.completed;
+        return item
       } else {
         return item;
       }
 
     });
-    this.setState({
-      toDoList: newToDo
-    });
+    this.setState({newToDo});
   }
-
+    removeCompleted = () => {
+        const newTask = this.state.toDoList.filter( item => !item.completed)
+        this.setState({
+          toDoList: newTask
+        }) 
+    }
     addNewItem = itemText => {
       const newItem = {
         task: itemText,
@@ -81,10 +80,10 @@ class App extends React.Component {
         <ToDoList
           toDo={this.state.toDoList}
           toggleItem={this.toggleItem}
+          removeCompleted={this.removeCompleted}
           />
       </div>
     );
   }
 }
-
 export default App;
